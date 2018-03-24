@@ -30,31 +30,16 @@ public class WorkersTableModel extends AbstractTableModel {
 
     public Object getValueAt(int r, int c) {
         String[] temp;
-        System.out.println(workers.size());
-        for (int i = 0; i < workers.size(); i++) {
-            temp = workers.get(i).split(",");
-            System.out.println(temp[0] + temp[1] + temp[2]);
-            switch (c) {
-                case 0:
-                    return temp[0];
-                case 1:
-                    return temp[1];
-                case 2:
-                    return temp[2];
-                default:
-                    return "";
-            }
-            /*for (int j = 0; j < temp.length; j++) {
-                if (c == j && (j + 3) % 3 == 0) {
-                    return name = temp[j];
-                } else if ((j + 3) % 3 == 1) {
-                    return surname = temp[j];
-                } else if ((j + 3) % 3 == 2) {
-                    return passport = temp[j];
-                }
-            }*/
-
+        temp = workers.get(r).split(",");
+        switch (c) {
+            case 0:
+                return temp[0];
+            case 1:
+                return temp[1];
+            case 2:
+                return temp[2];
+            default:
+                return "";
         }
-        return null;
     }
 }
