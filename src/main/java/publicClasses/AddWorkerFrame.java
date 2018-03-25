@@ -1,25 +1,24 @@
-package Collection;
+package publicClasses;
+
+import Collection.MainFrame;
+import Collection.WorkersTable;
+import DB.MainFrameDB;
+import DB.WorkersTableModel;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.*;
 
 public class AddWorkerFrame extends JFrame implements ActionListener {
 
-    private JLabel textName;
-    private JLabel textSurname;
-    private JLabel textPassport;
-    private JTextField name;
-    private JTextField surname;
-    private JTextField passportNumber;
-    private JButton ok;
-    private JButton clear;
-    private JButton back;
-    private JCheckBox saveWorkerInCollection;
-    private JCheckBox saveWorkerInTextFile;
-    private JCheckBox saveWorkerInBinaryFile;
-    private JCheckBox saveWorkerInXMLFile;
+    private JLabel textName, textSurname, textPassport;
+    private static JTextField name;
+    private static JTextField surname;
+    private static JTextField passportNumber;
+    private JButton ok, clear, back;
+    private Connection connection;
 
     public AddWorkerFrame () {
         setSize(400, 300);
@@ -49,18 +48,6 @@ public class AddWorkerFrame extends JFrame implements ActionListener {
         container.setLayout(new GridLayout(3,1));
         JPanel checkBoxPanel = new JPanel();
 
-        checkBoxPanel.setLayout(new GridLayout(1, 4));
-
-        saveWorkerInCollection = new JCheckBox("In collection");
-        saveWorkerInTextFile = new JCheckBox("In text file");
-        saveWorkerInBinaryFile = new JCheckBox("In binary file");
-        saveWorkerInXMLFile = new JCheckBox("In XML file");
-
-        checkBoxPanel.add(saveWorkerInCollection);
-        checkBoxPanel.add(saveWorkerInTextFile);
-        checkBoxPanel.add(saveWorkerInBinaryFile);
-        checkBoxPanel.add(saveWorkerInXMLFile);
-
         JPanel buttonPanel = new JPanel();
         buttonPanel.setLayout(new GridLayout(1,3));
 
@@ -86,8 +73,26 @@ public class AddWorkerFrame extends JFrame implements ActionListener {
         setVisible(true);
     }
 
+    public static void tableInsertSQL(Connection connection) throws SQLException {
+
+        PreparedStatement statement = connection.prepareStatement("INSERT INTO workers (name, surname, passport) " +
+                "VALUES (?, ?, ?)");
+
+        statement.setString(1, name.getText());
+        statement.setString(2, surname.getText());
+        statement.setInt(3, Integer.parseInt(passportNumber.getText()));
+        statement.execute();
+        //connection.commit();
+    }
     @Override
     public void actionPerformed(ActionEvent e) {
+        try {
+            Class.forName("org.postgresql.Driver");
+            connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/postgres",
+                    "postgres", "12345");
+        } catch (Exception e1) {
+            e1.printStackTrace();
+        }
 
         String res = e.getActionCommand();
         switch (res) {
@@ -95,12 +100,19 @@ public class AddWorkerFrame extends JFrame implements ActionListener {
                 if (!name.getText().equals("")
                         && !surname.getText().isEmpty()
                         && !passportNumber.getText().isEmpty() ) {
-                    WorkersTable.workers.add(new Worker( name.getText(),
-                            surname.getText(),
-                            passportNumber.getText()));
+                    WorkersTableModel.workers.add(new Worker( name.getText(),
+                                                             surname.getText(),
+                                                             passportNumber.getText()));
+                    try {
+                        tableInsertSQL(connection);
+                        connection.setAutoCommit(false);
+                        connection.close();
+                    } catch (SQLException e1) {
+                        e1.printStackTrace();
+                    }
                 } else return;
                 this.dispose();
-                MainFrame.workersTable.fireTableDataChanged();
+                MainFrameDB.model.fireTableDataChanged();
                 break;
             case "Clear":
                 name.setText("");

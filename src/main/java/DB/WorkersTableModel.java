@@ -1,5 +1,7 @@
 package DB;
 
+import publicClasses.Worker;
+
 import javax.swing.table.AbstractTableModel;
 import java.util.ArrayList;
 import java.util.List;
@@ -7,11 +9,9 @@ import java.util.List;
 public class WorkersTableModel extends AbstractTableModel {
 
     public static String[] header;
-    public static List<String> workers = new ArrayList<>(WorkerStorageDB.getWorkers());
-    public static String name;
-    public static String surname;
-    public static String passport;
-    WorkersTableModel(List<String> workers, String[] header) {
+    public static List<Worker> workers = new ArrayList<>(WorkerStorageDB.getWorkers());
+
+    WorkersTableModel(List<Worker> workers, String[] header) {
         this.workers = workers;
         this.header = header;
     }
@@ -30,14 +30,14 @@ public class WorkersTableModel extends AbstractTableModel {
 
     public Object getValueAt(int r, int c) {
         String[] temp;
-        temp = workers.get(r).split(",");
+
         switch (c) {
             case 0:
-                return temp[0];
+                return workers.get(r).getName();
             case 1:
-                return temp[1];
+                return workers.get(r).getSurname();
             case 2:
-                return temp[2];
+                return workers.get(r).getPassportNumber();
             default:
                 return "";
         }

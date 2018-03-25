@@ -1,4 +1,4 @@
-package Collection;
+package publicClasses;
 
 public class Worker {
     private String name;

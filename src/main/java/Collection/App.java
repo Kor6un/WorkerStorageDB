@@ -1,5 +1,7 @@
 package Collection;
 
+import publicClasses.Worker;
+
 import java.util.List;
 
 public class App {

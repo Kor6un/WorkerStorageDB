@@ -1,5 +1,7 @@
 package DB;
 
+import publicClasses.Worker;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -10,7 +12,7 @@ public class WorkerStorageDB{
     private static String surname;
     private static int passport;
 
-    private static List<String> workers = new ArrayList<>();
+    public static List<Worker> workers = new ArrayList<>();
 
     public static void viewAllWorkers(Connection connection) throws SQLException {
         Statement statement  = connection.createStatement();
@@ -26,14 +28,14 @@ public class WorkerStorageDB{
                 name = resultSet.getString("name");
                 surname = resultSet.getString("surname");
                 passport  = resultSet.getInt("passport");
-                workers.add(name + "," + surname + "," + passport);
+                workers.add(new Worker(name, surname, String.valueOf(passport)));
             }
 
         }
 
     }
 
-    public static List<String> getWorkers() {
+    public static List<Worker> getWorkers() {
         return workers;
     }
 

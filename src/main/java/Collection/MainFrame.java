@@ -1,5 +1,8 @@
 package Collection;
 
+import publicClasses.AddWorkerFrame;
+import publicClasses.Worker;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
