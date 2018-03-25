@@ -1,7 +1,6 @@
 package publicClasses;
 
-import Collection.MainFrame;
-import Collection.WorkersTable;
+import DB.ExeptionMassage;
 import DB.MainFrameDB;
 import DB.WorkersTableModel;
 
@@ -74,14 +73,20 @@ public class AddWorkerFrame extends JFrame implements ActionListener {
     }
 
     public static void tableInsertSQL(Connection connection) throws SQLException {
+        try {
+            PreparedStatement statement =
+                    connection.prepareStatement("INSERT INTO workers (name, surname, passport) " +
+                    "VALUES (?, ?, ?)");
 
-        PreparedStatement statement = connection.prepareStatement("INSERT INTO workers (name, surname, passport) " +
-                "VALUES (?, ?, ?)");
+            statement.setString(1, name.getText());
+            statement.setString(2, surname.getText());
 
-        statement.setString(1, name.getText());
-        statement.setString(2, surname.getText());
-        statement.setInt(3, Integer.parseInt(passportNumber.getText()));
-        statement.execute();
+            statement.setInt(3, Integer.parseInt(passportNumber.getText()));
+            statement.execute();
+        } catch (SQLException e) {
+
+           throw new SQLException("нарушено ограничение уникальности");
+        }
         //connection.commit();
     }
     @Override
@@ -108,7 +113,7 @@ public class AddWorkerFrame extends JFrame implements ActionListener {
                         connection.setAutoCommit(false);
                         connection.close();
                     } catch (SQLException e1) {
-                        e1.printStackTrace();
+                        new ExeptionMassage(e1.getMessage());
                     }
                 } else return;
                 this.dispose();

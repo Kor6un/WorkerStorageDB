@@ -1,17 +1,17 @@
-package Collection;
+package DB;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class NotFoundMassage extends JFrame implements ActionListener{
+public class ExeptionMassage extends JFrame implements ActionListener{
     JButton back;
     JLabel massage;
 
-    NotFoundMassage () {
+    public ExeptionMassage(String str) {
         setTitle("Сообщение");
-        setSize(300, 100);
+        setSize(200, 100);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
         setLayout(new BorderLayout());
@@ -19,7 +19,7 @@ public class NotFoundMassage extends JFrame implements ActionListener{
         //container.setLayout(new GridBagLayout());
         back = new JButton("Назад");
         back.addActionListener(this);
-        massage = new JLabel("Ничего не найдено");
+        massage = new JLabel(str);
         container.add(massage, BorderLayout.CENTER);
         container.add(back, BorderLayout.SOUTH);
 
