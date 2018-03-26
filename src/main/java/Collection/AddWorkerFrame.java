@@ -1,14 +1,13 @@
-package publicClasses;
+package Collection;
 
-import DB.ExeptionMassage;
 import DB.MainFrameDB;
 import DB.WorkersTableModel;
+import publicClasses.Worker;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.*;
 
 public class AddWorkerFrame extends JFrame implements ActionListener {
 
@@ -17,9 +16,8 @@ public class AddWorkerFrame extends JFrame implements ActionListener {
     private static JTextField surname;
     private static JTextField passportNumber;
     private JButton ok, clear, back;
-    private Connection connection;
 
-    public AddWorkerFrame () {
+    public AddWorkerFrame() {
         setSize(400, 300);
         setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
         setTitle("Add worker window");
@@ -72,49 +70,17 @@ public class AddWorkerFrame extends JFrame implements ActionListener {
         setVisible(true);
     }
 
-    public static void tableInsertSQL(Connection connection) throws SQLException {
-        try {
-            PreparedStatement statement =
-                    connection.prepareStatement("INSERT INTO workers (name, surname, passport) " +
-                    "VALUES (?, ?, ?)");
-
-            statement.setString(1, name.getText());
-            statement.setString(2, surname.getText());
-
-            statement.setInt(3, Integer.parseInt(passportNumber.getText()));
-            statement.execute();
-        } catch (SQLException e) {
-
-           throw new SQLException("нарушено ограничение уникальности");
-        }
-        //connection.commit();
-    }
     @Override
     public void actionPerformed(ActionEvent e) {
-        try {
-            Class.forName("org.postgresql.Driver");
-            connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/postgres",
-                    "postgres", "12345");
-        } catch (Exception e1) {
-            e1.printStackTrace();
-        }
-
         String res = e.getActionCommand();
         switch (res) {
             case "Added":
                 if (!name.getText().equals("")
                         && !surname.getText().isEmpty()
                         && !passportNumber.getText().isEmpty() ) {
-                    WorkersTableModel.workers.add(new Worker( name.getText(),
+                    WorkersTableModel.workers.add(new Worker(name.getText(),
                                                              surname.getText(),
                                                              passportNumber.getText()));
-                    try {
-                        tableInsertSQL(connection);
-                        connection.setAutoCommit(false);
-                        connection.close();
-                    } catch (SQLException e1) {
-                        new ExeptionMassage(e1.getMessage());
-                    }
                 } else return;
                 this.dispose();
                 MainFrameDB.model.fireTableDataChanged();

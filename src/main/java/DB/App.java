@@ -8,8 +8,8 @@ public class App {
     public static void main(String[] args) throws SQLException, ClassNotFoundException {
 
         Class.forName("org.postgresql.Driver");
-        Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/postgres",
-                    "postgres", "12345");
+        Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/Workers",
+                    "postgres", "");
 
 
         WorkerStorageDB.viewAllWorkers(connection);

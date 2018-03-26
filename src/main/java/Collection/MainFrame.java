@@ -1,6 +1,6 @@
 package Collection;
 
-import publicClasses.AddWorkerFrame;
+import DB.AddWorkerFrameDB;
 import publicClasses.Worker;
 
 import javax.swing.*;
@@ -77,7 +77,7 @@ public class MainFrame extends JFrame implements ActionListener, ComponentListen
 
         switch (res) {
             case "addWorker":
-                new AddWorkerFrame();
+                new AddWorkerFrameDB();
                 break;
             case "deleteWorker":
                 int selectRow = table.getSelectedRow();

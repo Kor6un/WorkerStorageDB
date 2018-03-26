@@ -29,8 +29,6 @@ public class WorkersTableModel extends AbstractTableModel {
     }
 
     public Object getValueAt(int r, int c) {
-        String[] temp;
-
         switch (c) {
             case 0:
                 return workers.get(r).getName();

@@ -1,4 +1,4 @@
-package DB;
+package publicClasses;
 
 import javax.swing.*;
 import java.awt.*;

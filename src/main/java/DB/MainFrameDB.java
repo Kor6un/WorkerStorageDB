@@ -1,7 +1,6 @@
 package DB;
 
 import Collection.*;
-import publicClasses.AddWorkerFrame;
 import publicClasses.Worker;
 import javax.swing.*;
 import java.awt.*;
@@ -9,7 +8,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
-import java.util.ArrayList;
 import java.util.List;
 
 public class MainFrameDB extends JFrame implements ActionListener, ComponentListener {
@@ -70,7 +68,7 @@ public class MainFrameDB extends JFrame implements ActionListener, ComponentList
 
         switch (res) {
             case "addWorker":
-                new AddWorkerFrame();
+                new AddWorkerFrameDB();
                 break;
             case "deleteWorker":
                 int selectRow = table.getSelectedRow();
